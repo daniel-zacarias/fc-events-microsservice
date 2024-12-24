@@ -1,0 +1,2 @@
+DELETE FROM "clients" WHERE id in ('e48dc30b-e087-460c-87b3-d825156d4659', '900528df-7de8-457c-a350-451fa1523629');
+DELETE FROM "account" WHERE id in ('46444f3b-c687-4db8-b08a-d8ad56fb2a3c', 'e01a8e9c-f875-4e04-a737-490cfa6ebc4a');

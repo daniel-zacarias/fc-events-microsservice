@@ -22,8 +22,8 @@ POST http://localhost:8080/transactions HTTP/1.1
 Content-Type: application/json
 
 {
-    "account_id_from": "4679ace8-6dda-4c32-9bc5-d07114153487",
-    "account_id_to": "0d3e7d1e-abaa-4921-8ea9-3608395b04df",
+    "account_id_from": "46444f3b-c687-4db8-b08a-d8ad56fb2a3c",
+    "account_id_to": "e01a8e9c-f875-4e04-a737-490cfa6ebc4a",
     "amount": 18
    
 }

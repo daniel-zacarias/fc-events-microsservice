@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com.br/devfullcycle/fc-ms-wallet/internal/database"
@@ -19,6 +20,9 @@ import (
 	"github.com.br/devfullcycle/fc-ms-wallet/pkg/uow"
 	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {
@@ -26,9 +30,27 @@ func main() {
 	database_user := os.Getenv("DATABASE_USER")
 	database_password := os.Getenv("DATABASE_PASSWORD")
 
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", database_user, database_password, "mysql", "3306", "wallet"))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&multiStatements=true", database_user, database_password, "mysql", "3306", "wallet"))
 	if err != nil {
 		panic(err)
+	}
+
+	driver, err := mysql.WithInstance(db, &mysql.Config{})
+	if err != nil {
+		log.Fatalf("Erro ao configurar driver do banco de dados: %v", err)
+	}
+	m, err := migrate.NewWithDatabaseInstance(
+		"file://internal/migrations",
+		"mysql",
+		driver,
+	)
+
+	if err != nil {
+		log.Fatalf("Erro ao criar instância de migração: %v", err)
+	}
+
+	if err = m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("Erro ao aplicar migrações: %v", err)
 	}
 
 	defer db.Close()
