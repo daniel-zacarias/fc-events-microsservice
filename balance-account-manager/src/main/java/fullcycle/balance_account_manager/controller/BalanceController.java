@@ -17,7 +17,7 @@ public class BalanceController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/balance/{account_id}")
+    @GetMapping("/balances/{account_id}")
     public ResponseEntity<BalanceDTO> one(@PathVariable String account_id) {
         Double accountBalance = accountService.getBalanceByAccountId(account_id);
         BalanceDTO balanceDTO = new BalanceDTO(accountBalance);
