@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("Erro ao configurar driver do banco de dados: %v", err)
 	}
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://internal/migrations",
+		"file://migrations",
 		"mysql",
 		driver,
 	)

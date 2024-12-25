@@ -15,6 +15,18 @@ services:
       - DATABASE_PASSWORD=root
     volumes:
       - ./go:/app
+    depends_on:
+      - mysql
+  balance-account-manager:
+    image: balance-account-manager
+    platform: linux/amd64
+    build:
+      context: ./balance-account-manager
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    depends_on:
+      - mysql
   mysql:
     image: mysql:5.7
     platform: linux/amd64
